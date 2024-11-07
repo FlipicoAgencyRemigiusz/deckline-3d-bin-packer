@@ -7,7 +7,6 @@ items_to_pack = [
     {"item": Item('Medium_Item_1', 'medium', 'cube', (20, 20, 20), 4, 1, 100, True, 'purple'), "quantity": 3},
     {"item": Item('Small_Item_1', 'small', 'cube', (10, 10, 10), 2, 1, 100, True, 'green'), "quantity": 5},
     {"item": Item('Tiny_Item_1', 'tiny', 'cube', (5, 5, 5), 0.5, 1, 100, True, 'pink'), "quantity": 10},
-    # Dodaj więcej elementów według potrzeb, ustawiając ich `quantity`
 ]
 
 # Funkcja do konwersji `quantity` na rzeczywistą listę przedmiotów
