@@ -3,10 +3,35 @@ from flask import request, jsonify
 from flask_cors import CORS
 from py3dbp import Item
 from inpost.test_off import pack_items  # Import z podfolderu 'inpost'
+import requests
+import threading
+import time
+from datetime import datetime
 
 # Inicjalizacja aplikacji Flask
 app = flask.Flask(__name__)
 CORS(app, origins=["https://www.deckline.pl"])  # Zezwalaj tylko na określony origin
+
+# URL do pingowania
+PING_URL = "https://deckline-3d-bin-packer.onrender.com"  # Zamień na swój URL
+PING_INTERVAL = 30  # Interwał w sekundach (30 sekund)
+
+
+# Funkcja pingująca URL
+def reload_website():
+    while True:
+        try:
+            response = requests.get(PING_URL)
+            print(f"Reloaded at {datetime.now().isoformat()}: Status Code {response.status_code}")
+        except requests.RequestException as error:
+            print(f"Error reloading at {datetime.now().isoformat()}: {error}")
+
+        time.sleep(PING_INTERVAL)
+
+
+# Uruchomienie pingowania w tle
+threading.Thread(target=reload_website, daemon=True).start()
+
 
 # Trasa testowa
 @app.route('/')
@@ -23,6 +48,7 @@ def run_packing():
     if not data or 'items' not in data:
         return jsonify({"success": False, "reason": "Missing items data"}), 400
 
+    print('data: ', data)
     items_to_pack = data['items']
 
     # Konwersja przedmiotów z ilością na obiekty Item
